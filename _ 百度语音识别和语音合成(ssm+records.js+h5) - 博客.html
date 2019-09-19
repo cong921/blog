@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://cong921.i64.top:9000/article/2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta name="keywords" content="语音">
+    <meta name="description" content="博客系统,Blade框架,Tale">
+    <link rel="shortcut icon" href="http://cong921.i64.top:9000/templates/themes/default/static/img/favicon.png">
+    <link rel="apple-touch-icon" href="http://cong921.i64.top:9000/templates/themes/default/static/img/apple-touch-icon.png">
+    <title>​ 百度语音识别和语音合成(ssm+records.js+h5) - 博客</title>
+    <link href="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/xcode.min.css" rel="stylesheet">
+    <link href="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/style.min.css" rel="stylesheet">
+            <script src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/jquery.min.js.下载"></script>
+
+
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>#instantclick{position:fixed;top:0;left:0;width:100%;pointer-events:none;z-index:2147483647;transition:opacity .25s .1s}.instantclick-bar{background:#29d;width:100%;margin-left:-100%;height:2px;transition:all .25s}</style></head>
+<body gtools_scp_screen_capture_injected="true">
+<!--[if lt IE 8]>
+<div class="browsehappy" role="dialog">
+    当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="http://browsehappy.com/" target="_blank">升级你的浏览器</a>。
+</div>
+<![endif]-->
+<header id="header" class="header bg-white animated headroom--not-top headroom--not-bottom slideUp">
+    <div class="navbar-container">
+        <a href="http://cong921.i64.top:9000/" class="navbar-logo">
+            <img src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/logo.png" alt="博客">
+        </a>
+        <div class="navbar-menu">
+            <a href="http://cong921.i64.top:9000/archives">归档</a>
+            <a href="http://cong921.i64.top:9000/links">友链</a>
+            <a href="http://cong921.i64.top:9000/about">关于</a>
+	    <a href="http://cong921.i64.top:9000/admin/login">登录</a>
+        </div>
+        <div class="navbar-search" onclick="">
+            <span class="icon-search"></span>
+            <form role="search" onsubmit="return false;">
+                <span class="search-box">
+                    <input type="text" id="search-inp" class="input" placeholder="搜索..." maxlength="30" autocomplete="off">
+                </span>
+            </form>
+        </div>
+        <div class="navbar-mobile-menu" onclick="">
+            <span class="icon-menu cross"><span class="middle"></span></span>
+            <ul>
+                <li><a href="http://cong921.i64.top:9000/archives">归档</a></li>
+                <li><a href="http://cong921.i64.top:9000/links">友链</a></li>
+                <li><a href="http://cong921.i64.top:9000/about">关于</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+
+<article class="main-content page-page" itemscope="" itemtype="http://schema.org/Article">
+    <div class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            <a href="http://cong921.i64.top:9000/article/2">​ 百度语音识别和语音合成(ssm+records.js+h5)</a>
+        </h1>
+        <div class="post-data">
+            <time datetime="2017-02-23" itemprop="datePublished">发布于 2017-02-23</time>
+            / <a href="http://cong921.i64.top:9000/category/%E7%99%BE%E5%BA%A6">百度</a><a href="http://cong921.i64.top:9000/category/%E9%BB%98%E8%AE%A4%E5%88%86%E7%B1%BB">默认分类</a> / <a href="http://cong921.i64.top:9000/article/2#comments">没有评论</a> /
+            63浏览
+        </div>
+    </div>
+    <div id="post-content" class="post-content" itemprop="articleBody">
+        <p class="post-tags"><a href="http://cong921.i64.top:9000/tag/%E8%AF%AD%E9%9F%B3">语音</a></p>
+        <p>​
+基本思路
+语音识别
+搭建基本的web项目,后加入luyin.html</p>
+<pre><code class="hljs xml"><span class="hljs-meta">&lt;!DOCTYPE html&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">"http://www.w3.org/1999/xhtml"</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">http-equiv</span>=<span class="hljs-string">"Content-Type"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"text/html; charset=utf-8"</span> /&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"text/javascript"</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"../js/luyin.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">audio</span> <span class="hljs-attr">controls</span> <span class="hljs-attr">autoplay</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">audio</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"startRecording()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"录音"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"stopRecording()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"停止"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"playRecording()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"播放"</span> /&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">"uploadAudio()"</span> <span class="hljs-attr">type</span>=<span class="hljs-string">"button"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"提交"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
+        <span class="hljs-keyword">var</span> recorder;
+        <span class="hljs-keyword">var</span> audio = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'audio'</span>);
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startRecording</span>(<span class="hljs-params"></span>) </span>{
+            HZRecorder.get(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">rec</span>) </span>{
+                recorder = rec;
+                recorder.start();
+            });
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stopRecording</span>(<span class="hljs-params"></span>) </span>{
+            recorder.stop();
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">playRecording</span>(<span class="hljs-params"></span>) </span>{
+            recorder.play(audio);
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRes</span>(<span class="hljs-params">result</span>)</span>{
+        <span class="hljs-keyword">if</span>(result==<span class="hljs-literal">undefined</span>){
+           	setTimeout(getRes,<span class="hljs-number">100</span>);
+           	}<span class="hljs-keyword">else</span>{
+           	<span class="hljs-keyword">return</span> result;
+           	}
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uploadAudio</span>(<span class="hljs-params"></span>) </span>{
+            
+            <span class="hljs-comment">//提交到服务器</span>
+            recorder.upload(<span class="hljs-string">"../speech/data"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">state, e</span>) </span>{
+                <span class="hljs-keyword">switch</span> (state) {
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'uploading'</span>:
+                        <span class="hljs-comment">//var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';</span>
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'ok'</span>:
+                        <span class="hljs-comment">//alert(e.target.responseText);</span>
+                       <span class="hljs-comment">// alert("上传成功");</span>
+                       
+                       	alert(<span class="hljs-built_in">eval</span>(<span class="hljs-string">"("</span>+getRes(e.target.responseText)+<span class="hljs-string">")"</span>).result);
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'error'</span>:
+                        alert(<span class="hljs-string">"上传失败"</span>);
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'cancel'</span>:
+                        alert(<span class="hljs-string">"上传被取消"</span>);
+                        <span class="hljs-keyword">break</span>;
+                }
+            });
+        }
+    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</code></pre>
+<p>添加luyin.js</p>
+<pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">window</span>) </span>{
+    <span class="hljs-comment">//兼容</span>
+    <span class="hljs-built_in">window</span>.URL = <span class="hljs-built_in">window</span>.URL || <span class="hljs-built_in">window</span>.webkitURL;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    <span class="hljs-keyword">var</span> HZRecorder = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream, config</span>) </span>{
+        config = config || {};
+        config.sampleBits = config.sampleBits || <span class="hljs-number">16</span>;      <span class="hljs-comment">//采样数位 8, 16</span>
+        config.sampleRate = config.sampleRate || (<span class="hljs-number">16000</span>);   <span class="hljs-comment">//采样率(1/6 44100)</span>
+        <span class="hljs-keyword">var</span> context = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">window</span>.webkitAudioContext || <span class="hljs-built_in">window</span>.AudioContext)();
+        <span class="hljs-keyword">var</span> audioInput = context.createMediaStreamSource(stream);
+        <span class="hljs-keyword">var</span> createScript = context.createScriptProcessor || context.createJavaScriptNode;
+        <span class="hljs-keyword">var</span> recorder = createScript.apply(context, [<span class="hljs-number">4096</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">var</span> audioData = {
+            <span class="hljs-attr">size</span>: <span class="hljs-number">0</span>          <span class="hljs-comment">//录音文件长度</span>
+            , <span class="hljs-attr">buffer</span>: []     <span class="hljs-comment">//录音缓存</span>
+            , <span class="hljs-attr">inputSampleRate</span>: context.sampleRate    <span class="hljs-comment">//输入采样率</span>
+            , <span class="hljs-attr">inputSampleBits</span>: <span class="hljs-number">16</span>       <span class="hljs-comment">//输入采样数位 8, 16</span>
+            , <span class="hljs-attr">outputSampleRate</span>: config.sampleRate    <span class="hljs-comment">//输出采样率</span>
+            , <span class="hljs-attr">oututSampleBits</span>: config.sampleBits       <span class="hljs-comment">//输出采样数位 8, 16</span>
+            , <span class="hljs-attr">input</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+                <span class="hljs-keyword">this</span>.buffer.push(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(data));
+                <span class="hljs-keyword">this</span>.size += data.length;
+            }
+            , <span class="hljs-attr">compress</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">//合并压缩</span>
+                <span class="hljs-comment">//合并</span>
+                <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(<span class="hljs-keyword">this</span>.size);
+                <span class="hljs-keyword">var</span> offset = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.buffer.length; i++) {
+                    data.set(<span class="hljs-keyword">this</span>.buffer[i], offset);
+                    offset += <span class="hljs-keyword">this</span>.buffer[i].length;
+                }
+                <span class="hljs-comment">//压缩</span>
+                <span class="hljs-keyword">var</span> compression = <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.inputSampleRate / <span class="hljs-keyword">this</span>.outputSampleRate);
+                <span class="hljs-keyword">var</span> length = data.length / compression;
+                <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(length);
+                <span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (index &lt; length) {
+                    result[index] = data[j];
+                    j += compression;
+                    index++;
+                }
+                <span class="hljs-keyword">return</span> result;
+            }
+            , <span class="hljs-attr">encodeWAV</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">var</span> sampleRate = <span class="hljs-built_in">Math</span>.min(<span class="hljs-keyword">this</span>.inputSampleRate, <span class="hljs-keyword">this</span>.outputSampleRate);
+                <span class="hljs-keyword">var</span> sampleBits = <span class="hljs-built_in">Math</span>.min(<span class="hljs-keyword">this</span>.inputSampleBits, <span class="hljs-keyword">this</span>.oututSampleBits);
+                <span class="hljs-keyword">var</span> bytes = <span class="hljs-keyword">this</span>.compress();
+                <span class="hljs-keyword">var</span> dataLength = bytes.length * (sampleBits / <span class="hljs-number">8</span>);
+                <span class="hljs-keyword">var</span> buffer = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ArrayBuffer</span>(<span class="hljs-number">44</span> + dataLength);
+                <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">DataView</span>(buffer);
+                <span class="hljs-keyword">var</span> channelCount = <span class="hljs-number">1</span>;<span class="hljs-comment">//单声道</span>
+                <span class="hljs-keyword">var</span> offset = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">var</span> writeString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; str.length; i++) {
+                        data.setUint8(offset + i, str.charCodeAt(i));
+                    }
+                }
+                <span class="hljs-comment">// 资源交换文件标识符 </span>
+                writeString(<span class="hljs-string">'RIFF'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 下个地址开始到文件尾总字节数,即文件大小-8 </span>
+                data.setUint32(offset, <span class="hljs-number">36</span> + dataLength, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// WAV文件标志</span>
+                writeString(<span class="hljs-string">'WAVE'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 波形格式标志 </span>
+                writeString(<span class="hljs-string">'fmt '</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 过滤字节,一般为 0x10 = 16 </span>
+                data.setUint32(offset, <span class="hljs-number">16</span>, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 格式类别 (PCM形式采样数据) </span>
+                data.setUint16(offset, <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 通道数 </span>
+                data.setUint16(offset, channelCount, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 采样率,每秒样本数,表示每个通道的播放速度 </span>
+                data.setUint32(offset, sampleRate, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 波形数据传输率 (每秒平均字节数) 单声道×每秒数据位数×每样本数据位/8 </span>
+                data.setUint32(offset, channelCount * sampleRate * (sampleBits / <span class="hljs-number">8</span>), <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 快数据调整数 采样一次占用字节数 单声道×每样本的数据位数/8 </span>
+                data.setUint16(offset, channelCount * (sampleBits / <span class="hljs-number">8</span>), <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 每样本数据位数 </span>
+                data.setUint16(offset, sampleBits, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 数据标识符 </span>
+                writeString(<span class="hljs-string">'data'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 采样数据总数,即数据总大小-44 </span>
+                data.setUint32(offset, dataLength, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 写入采样数据 </span>
+                <span class="hljs-keyword">if</span> (sampleBits === <span class="hljs-number">8</span>) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; bytes.length; i++, offset++) {
+                        <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">-1</span>, <span class="hljs-built_in">Math</span>.min(<span class="hljs-number">1</span>, bytes[i]));
+                        <span class="hljs-keyword">var</span> val = s &lt; <span class="hljs-number">0</span> ? s * <span class="hljs-number">0x8000</span> : s * <span class="hljs-number">0x7FFF</span>;
+                        val = <span class="hljs-built_in">parseInt</span>(<span class="hljs-number">255</span> / (<span class="hljs-number">65535</span> / (val + <span class="hljs-number">32768</span>)));
+                        data.setInt8(offset, val, <span class="hljs-literal">true</span>);
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; bytes.length; i++, offset += <span class="hljs-number">2</span>) {
+                        <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">-1</span>, <span class="hljs-built_in">Math</span>.min(<span class="hljs-number">1</span>, bytes[i]));
+                        data.setInt16(offset, s &lt; <span class="hljs-number">0</span> ? s * <span class="hljs-number">0x8000</span> : s * <span class="hljs-number">0x7FFF</span>, <span class="hljs-literal">true</span>);
+                    }
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Blob([data], { <span class="hljs-attr">type</span>: <span class="hljs-string">'audio/wav'</span> });
+            }
+        };
+        <span class="hljs-comment">//开始录音</span>
+        <span class="hljs-keyword">this</span>.start = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            audioInput.connect(recorder);
+            recorder.connect(context.destination);
+        }
+        <span class="hljs-comment">//停止</span>
+        <span class="hljs-keyword">this</span>.stop = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            recorder.disconnect();
+        }
+        <span class="hljs-comment">//获取音频文件</span>
+        <span class="hljs-keyword">this</span>.getBlob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>.stop();
+            <span class="hljs-keyword">return</span> audioData.encodeWAV();
+        }
+        <span class="hljs-comment">//回放</span>
+        <span class="hljs-keyword">this</span>.play = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">audio</span>) </span>{
+            audio.src = <span class="hljs-built_in">window</span>.URL.createObjectURL(<span class="hljs-keyword">this</span>.getBlob());
+        }
+        <span class="hljs-comment">//上传</span>
+        <span class="hljs-keyword">this</span>.upload = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">url, callback</span>) </span>{
+            <span class="hljs-keyword">var</span> fd = <span class="hljs-keyword">new</span> FormData();
+            fd.append(<span class="hljs-string">"audioData"</span>, <span class="hljs-keyword">this</span>.getBlob());
+            <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest();
+            <span class="hljs-keyword">if</span> (callback) {
+                xhr.upload.addEventListener(<span class="hljs-string">"progress"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'uploading'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"load"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'ok'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"error"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'error'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"abort"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'cancel'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+            }
+            xhr.open(<span class="hljs-string">"POST"</span>, url);
+            xhr.send(fd);
+        }
+        <span class="hljs-comment">//音频采集</span>
+        recorder.onaudioprocess = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+            audioData.input(e.inputBuffer.getChannelData(<span class="hljs-number">0</span>));
+            <span class="hljs-comment">//record(e.inputBuffer.getChannelData(0));</span>
+        }
+    };
+    <span class="hljs-comment">//抛出异常</span>
+    HZRecorder.throwError = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message</span>) </span>{
+        alert(message);
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">this</span>.toString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> message; } }
+    }
+    <span class="hljs-comment">//是否支持录音</span>
+    HZRecorder.canRecording = (navigator.getUserMedia != <span class="hljs-literal">null</span>);
+    <span class="hljs-comment">//获取录音机</span>
+    HZRecorder.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback, config</span>) </span>{
+        <span class="hljs-keyword">if</span> (callback) {
+            <span class="hljs-keyword">if</span> (navigator.getUserMedia) {
+                navigator.getUserMedia(
+                    { <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span> } <span class="hljs-comment">//只启用音频</span>
+                    , <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream</span>) </span>{
+                        <span class="hljs-keyword">var</span> rec = <span class="hljs-keyword">new</span> HZRecorder(stream, config);
+                        callback(rec);
+                    }
+                    , <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+                        <span class="hljs-keyword">switch</span> (error.code || error.name) {
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'PERMISSION_DENIED'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'PermissionDeniedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'用户拒绝提供信息。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'NOT_SUPPORTED_ERROR'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'NotSupportedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'浏览器不支持硬件设备。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'MANDATORY_UNSATISFIED_ERROR'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'MandatoryUnsatisfiedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'无法发现指定的硬件设备。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">default</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'无法打开麦克风。异常信息:'</span> + (error.code || error.name));
+                                <span class="hljs-keyword">break</span>;
+                        }
+                    });
+            } <span class="hljs-keyword">else</span> {
+                HZRecorder.throwErr(<span class="hljs-string">'当前浏览器不支持录音功能。'</span>); <span class="hljs-keyword">return</span>;
+            }
+        }
+    }
+    <span class="hljs-built_in">window</span>.HZRecorder = HZRecorder;
+})(<span class="hljs-built_in">window</span>);
+</code></pre>
+<p>我用的是linux虚拟机下的开发环境,h5需要https的才能录音(Nginx+https可自行谷歌,百度),如果是localhost访问的可不必多此一举,直接看下面的
+打开luyin.html,点击录音,说完话点击停止,然后提交即可,
+前端录音页面实现录音并上传到后端
+application.xml添加以下代码</p>
+<pre><code class="language-&lt;bean hljs javascript">      &lt;property name=<span class="hljs-string">"maxUploadSize"</span> value=<span class="hljs-string">"104857600"</span>/&gt;
+       	<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"maxInMemorySize"</span> <span class="hljs-attr">value</span>=<span class="hljs-string">"4096"</span>/&gt;</span>
+  <span class="hljs-tag">&lt;/<span class="hljs-name">bean</span>&gt;</span></span>
+</code></pre>
+<p>后台代码SpeechController</p>
+<pre><code class="language-package">import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import com.baidu.aip.speech.AipSpeech;
+import cn.edu.domain.Exchange;
+import cn.edu.service.ExchangeService;
+@Controller
+@RequestMapping("/speech")
+public class SpeechController {
+@Autowired
+private ExchangeService exchangeService;
+public static final String APP_ID = "你的百度ID";
+    public static final String API_KEY = "你的百度API_KEY";
+    public static final String SECRET_KEY = "你的百度SECRET_KEY";
+@RequestMapping("/data")
+public @ResponseBody Map&lt;String,String&gt;  getData(HttpServletRequest request){
+/*MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request; 
+CommonsMultipartFile audio = (CommonsMultipartFile) multipartRequest.getFile("audioData");
+System.out.println(audio);
+return exchangeService.getData();*/
+String result = "success";  
+        String path = request.getSession().getServletContext().getRealPath("");  //获取项目服务器地址  
+        System.out.println(path);
+        File file2 = new File("/root/kencery/uploadwav"); //设置一个文件路径  
+        if (!file2.exists()) {   
+             file2.mkdirs(); //如果文件夹不存在就创建所需的文件夹  
+            }  
+        //二进制上传  
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;  
+        //获取文件  
+        CommonsMultipartFile wavfile = (CommonsMultipartFile) multipartRequest.getFile("audioData");  
+//	        CommonsMultipartFile imgfile = (CommonsMultipartFile) multipartRequest.getFile("blob"); 
+        File file=null;
+        //判断是否有文件提交  
+        if(wavfile != null){  
+            if( !wavfile.isEmpty() ){  
+                  SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");//到毫秒  
+                  String time = sdf.format(new Date()); //以时间设置为上传的文件名  
+                  double random = Math.random();
+                  int i=(int) (random*1000);
+                  file = new File("/root/kencery/uploadwav"+"/"+time+String.valueOf(i)+ ".wav");  
+                  try {  
+//	                      imgfile.getFileItem().write(file); 
+                  System.out.println(file.getAbsolutePath());
+                  wavfile.getFileItem().write(file);   
+                  } catch (Exception e) {  
+                      result = "error";  
+                     e.printStackTrace();  
+                  }  
+            }  
+        }else {  
+            result = "error";  
+        }  
+        /*String storageDescription = wavfile.getStorageDescription();
+        String fileName=storageDescription.substring(storageDescription.lastIndexOf("/")+1,storageDescription.lastIndexOf(".tmp"));
+        File file=new File(storageDescription);
+//	        FileOpreateUtils.copyfile(file, new File("/root/kencery/uploadwav/"+fileName+".wav"), true);
+//	        return result; 
+        BufferedInputStream bis=null;
+        BufferedOutputStream bos=null;
+        try {
+bis=new BufferedInputStream(new FileInputStream(file));
+bos=new BufferedOutputStream(new FileOutputStream(new File("/root/kencery/uploadwav/"+fileName+".wav")));
+byte[] b=new byte[1024];
+int len=0;
+while((len=bis.read(b))&gt;0) {
+bos.write(b,0,len);
+}
+} catch (FileNotFoundException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+} catch (IOException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+}finally {
+try {
+if(bis!=null)
+bis.close();
+if(bos!=null)
+bos.close();
+} catch (IOException e) {
+// TODO Auto-generated catch block
+e.printStackTrace();
+}
+}*/
+     // 初始化一个AipSpeech
+        AipSpeech client = new AipSpeech(APP_ID, API_KEY, SECRET_KEY);
+        // 可选：设置网络连接参数
+        client.setConnectionTimeoutInMillis(2000);
+        client.setSocketTimeoutInMillis(60000);
+        // 可选：设置代理服务器地址, http和socket二选一，或者均不设置
+//	        client.setHttpProxy("proxy_host", proxy_port);  // 设置http代理
+//	        client.setSocketProxy("proxy_host", proxy_port);  // 设置socket代理
+        // 调用接口
+        Map&lt;String ,String&gt; map=new HashMap&lt;&gt;();
+       if(file!=null) {
+       JSONObject res = client.asr(file.getAbsolutePath(), "wav", 16000, null);
+       if("success.".equals(res.getString("err_msg"))) {
+       map.put("result", res.getJSONArray("result").getString(0));
+       }
+        System.out.println(res.toString(2));
+       }
+      
+        
+    return map;
+}
+@RequestMapping("/data1")
+public @ResponseBody List&lt;Exchange&gt; getData(){
+return exchangeService.getData();
+}
+}
+</code></pre>
+<p>录音文件上传到服务器,调用百度api进行识别
+具体步骤
+扩展
+用户停止说话一段时间,录音自动停止,并上传到服务器进行语音识别
+我用的是volume-meter.js+main-volume.js实现的
+volume-meter.js如下:</p>
+<pre><code class="language-/* hljs cs"><span class="hljs-function">The MIT <span class="hljs-title">License</span> (<span class="hljs-params">MIT</span>)
+<span class="hljs-title">Copyright</span> (<span class="hljs-params">c</span>) 2014 Chris Wilson
+Permission <span class="hljs-keyword">is</span> hereby granted, free of charge, to any person obtaining a copy
+of <span class="hljs-keyword">this</span> software and associated documentation <span class="hljs-title">files</span> (<span class="hljs-params">the <span class="hljs-string">"Software"</span></span>), to deal
+<span class="hljs-keyword">in</span> the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software <span class="hljs-keyword">is</span>
+furnished to <span class="hljs-keyword">do</span> so, subject to the following conditions:
+The above copyright notice and <span class="hljs-keyword">this</span> permission notice shall be included <span class="hljs-keyword">in</span> all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+<span class="hljs-comment">/*
+Usage:
+audioNode = createAudioMeter(audioContext,clipLevel,averaging,clipLag);
+audioContext: the AudioContext you're using.
+clipLevel: the level (0 to 1) that you would consider "clipping".
+   Defaults to 0.98.
+averaging: how "smoothed" you would like the meter to be over time.
+   Should be between 0 and less than 1.  Defaults to 0.95.
+clipLag: how long you would like the "clipping" indicator to show
+   after clipping has occured, in milliseconds.  Defaults to 750ms.
+Access the clipping through node.checkClipping(); use node.shutdown to get rid of it.
+*/</span>
+function <span class="hljs-title">createAudioMeter</span>(<span class="hljs-params">audioContext,clipLevel,averaging,clipLag</span>) </span>{
+<span class="hljs-keyword">var</span> processor = audioContext.createScriptProcessor(<span class="hljs-number">512</span>);
+processor.onaudioprocess = volumeAudioProcess;
+processor.clipping = <span class="hljs-literal">false</span>;
+processor.lastClip = <span class="hljs-number">0</span>;
+processor.volume = <span class="hljs-number">0</span>;
+processor.clipLevel = clipLevel || <span class="hljs-number">0.98</span>;
+processor.averaging = averaging || <span class="hljs-number">0.95</span>;
+processor.clipLag = clipLag || <span class="hljs-number">750</span>;
+<span class="hljs-comment">// this will have no effect, since we don't copy the input to the output,</span>
+<span class="hljs-comment">// but works around a current Chrome bug.</span>
+processor.connect(audioContext.destination);
+processor.checkClipping =
+function(){
+<span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.clipping)
+<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">if</span> ((<span class="hljs-keyword">this</span>.lastClip + <span class="hljs-keyword">this</span>.clipLag) &lt; window.performance.now())
+<span class="hljs-keyword">this</span>.clipping = <span class="hljs-literal">false</span>;
+<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.clipping;
+};
+processor.shutdown =
+function(){
+<span class="hljs-keyword">this</span>.disconnect();
+<span class="hljs-keyword">this</span>.onaudioprocess = <span class="hljs-literal">null</span>;
+};
+<span class="hljs-keyword">return</span> processor;
+}
+<span class="hljs-function">function <span class="hljs-title">volumeAudioProcess</span>(<span class="hljs-params"> <span class="hljs-keyword">event</span> </span>) </span>{
+<span class="hljs-keyword">var</span> buf = <span class="hljs-keyword">event</span>.inputBuffer.getChannelData(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">var</span> bufLength = buf.length;
+<span class="hljs-keyword">var</span> sum = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">var</span> x;
+<span class="hljs-comment">// Do a root-mean-square on the samples: sum up the squares...</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt;bufLength; i++) {
+    x = buf[i];
+    <span class="hljs-keyword">if</span> (Math.abs(x)&gt;=<span class="hljs-keyword">this</span>.clipLevel) {
+    <span class="hljs-keyword">this</span>.clipping = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">this</span>.lastClip = window.performance.now();
+    }
+    sum += x * x;
+    }
+    <span class="hljs-comment">// ... then take the square root of the sum.</span>
+    <span class="hljs-keyword">var</span> rms =  Math.sqrt(sum / bufLength);
+    <span class="hljs-comment">// Now smooth this out with the averaging factor applied</span>
+    <span class="hljs-comment">// to the previous sample - take the max here because we</span>
+    <span class="hljs-comment">// want "fast attack, slow release."</span>
+    <span class="hljs-keyword">this</span>.volume = Math.max(rms, <span class="hljs-keyword">this</span>.volume*<span class="hljs-keyword">this</span>.averaging);
+}
+</code></pre>
+<p>main-volume.js如下:</p>
+<pre><code class="language-/* hljs php">The MIT License (MIT)
+Copyright (c) <span class="hljs-number">2014</span> Chris Wilson
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software <span class="hljs-keyword">and</span> associated documentation files (the <span class="hljs-string">"Software"</span>), to deal
+in the Software without restriction, including without limitation the rights
+to <span class="hljs-keyword">use</span>, <span class="hljs-title">copy</span>, <span class="hljs-title">modify</span>, <span class="hljs-title">merge</span>, <span class="hljs-title">publish</span>, <span class="hljs-title">distribute</span>, <span class="hljs-title">sublicense</span>, <span class="hljs-title">and</span>/<span class="hljs-title">or</span> <span class="hljs-title">sell</span>
+<span class="hljs-title">copies</span> <span class="hljs-title">of</span> <span class="hljs-title">the</span> <span class="hljs-title">Software</span>, <span class="hljs-title">and</span> <span class="hljs-title">to</span> <span class="hljs-title">permit</span> <span class="hljs-title">persons</span> <span class="hljs-title">to</span> <span class="hljs-title">whom</span> <span class="hljs-title">the</span> <span class="hljs-title">Software</span> <span class="hljs-title">is</span>
+<span class="hljs-title">furnished</span> <span class="hljs-title">to</span> <span class="hljs-title">do</span> <span class="hljs-title">so</span>, <span class="hljs-title">subject</span> <span class="hljs-title">to</span> <span class="hljs-title">the</span> <span class="hljs-title">following</span> <span class="hljs-title">conditions</span>:
+<span class="hljs-title">The</span> <span class="hljs-title">above</span> <span class="hljs-title">copyright</span> <span class="hljs-title">notice</span> <span class="hljs-title">and</span> <span class="hljs-title">this</span> <span class="hljs-title">permission</span> <span class="hljs-title">notice</span> <span class="hljs-title">shall</span> <span class="hljs-title">be</span> <span class="hljs-title">included</span> <span class="hljs-title">in</span> <span class="hljs-title">all</span>
+<span class="hljs-title">copies</span> <span class="hljs-title">or</span> <span class="hljs-title">substantial</span> <span class="hljs-title">portions</span> <span class="hljs-title">of</span> <span class="hljs-title">the</span> <span class="hljs-title">Software</span>.
+<span class="hljs-title">THE</span> <span class="hljs-title">SOFTWARE</span> <span class="hljs-title">IS</span> <span class="hljs-title">PROVIDED</span> "<span class="hljs-title">AS</span> <span class="hljs-title">IS</span>", <span class="hljs-title">WITHOUT</span> <span class="hljs-title">WARRANTY</span> <span class="hljs-title">OF</span> <span class="hljs-title">ANY</span> <span class="hljs-title">KIND</span>, <span class="hljs-title">EXPRESS</span> <span class="hljs-title">OR</span>
+<span class="hljs-title">IMPLIED</span>, <span class="hljs-title">INCLUDING</span> <span class="hljs-title">BUT</span> <span class="hljs-title">NOT</span> <span class="hljs-title">LIMITED</span> <span class="hljs-title">TO</span> <span class="hljs-title">THE</span> <span class="hljs-title">WARRANTIES</span> <span class="hljs-title">OF</span> <span class="hljs-title">MERCHANTABILITY</span>,
+<span class="hljs-title">FITNESS</span> <span class="hljs-title">FOR</span> <span class="hljs-title">A</span> <span class="hljs-title">PARTICULAR</span> <span class="hljs-title">PURPOSE</span> <span class="hljs-title">AND</span> <span class="hljs-title">NONINFRINGEMENT</span>. <span class="hljs-title">IN</span> <span class="hljs-title">NO</span> <span class="hljs-title">EVENT</span> <span class="hljs-title">SHALL</span> <span class="hljs-title">THE</span>
+<span class="hljs-title">AUTHORS</span> <span class="hljs-title">OR</span> <span class="hljs-title">COPYRIGHT</span> <span class="hljs-title">HOLDERS</span> <span class="hljs-title">BE</span> <span class="hljs-title">LIABLE</span> <span class="hljs-title">FOR</span> <span class="hljs-title">ANY</span> <span class="hljs-title">CLAIM</span>, <span class="hljs-title">DAMAGES</span> <span class="hljs-title">OR</span> <span class="hljs-title">OTHER</span>
+<span class="hljs-title">LIABILITY</span>, <span class="hljs-title">WHETHER</span> <span class="hljs-title">IN</span> <span class="hljs-title">AN</span> <span class="hljs-title">ACTION</span> <span class="hljs-title">OF</span> <span class="hljs-title">CONTRACT</span>, <span class="hljs-title">TORT</span> <span class="hljs-title">OR</span> <span class="hljs-title">OTHERWISE</span>, <span class="hljs-title">ARISING</span> <span class="hljs-title">FROM</span>,
+<span class="hljs-title">OUT</span> <span class="hljs-title">OF</span> <span class="hljs-title">OR</span> <span class="hljs-title">IN</span> <span class="hljs-title">CONNECTION</span> <span class="hljs-title">WITH</span> <span class="hljs-title">THE</span> <span class="hljs-title">SOFTWARE</span> <span class="hljs-title">OR</span> <span class="hljs-title">THE</span> <span class="hljs-title">USE</span> <span class="hljs-title">OR</span> <span class="hljs-title">OTHER</span> <span class="hljs-title">DEALINGS</span> <span class="hljs-title">IN</span> <span class="hljs-title">THE</span>
+<span class="hljs-title">SOFTWARE</span>.
+*/
+<span class="hljs-title">var</span> <span class="hljs-title">audioContext</span> = <span class="hljs-title">null</span>;
+<span class="hljs-keyword">var</span> meter = <span class="hljs-keyword">null</span>;
+<span class="hljs-keyword">var</span> canvasContext = <span class="hljs-keyword">null</span>;
+<span class="hljs-keyword">var</span> WIDTH=<span class="hljs-number">500</span>;
+<span class="hljs-keyword">var</span> HEIGHT=<span class="hljs-number">50</span>;
+<span class="hljs-keyword">var</span> rafID = <span class="hljs-keyword">null</span>;
+window.onload = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> </span>{
+    <span class="hljs-comment">// grab our canvas</span>
+canvasContext = document.getElementById( <span class="hljs-string">"meter"</span> ).getContext(<span class="hljs-string">"2d"</span>);
+    <span class="hljs-comment">// monkeypatch Web Audio</span>
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    <span class="hljs-comment">// grab an audio context</span>
+    audioContext = <span class="hljs-keyword">new</span> AudioContext();
+    <span class="hljs-comment">// Attempt to get audio input</span>
+    <span class="hljs-keyword">try</span> {
+        <span class="hljs-comment">// monkeypatch getUserMedia</span>
+        navigator.getUserMedia = 
+        navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia;
+        <span class="hljs-comment">// ask for an audio input</span>
+        navigator.getUserMedia(
+        {
+            <span class="hljs-string">"audio"</span>: {
+                <span class="hljs-string">"mandatory"</span>: {
+                    <span class="hljs-string">"googEchoCancellation"</span>: <span class="hljs-string">"false"</span>,
+                    <span class="hljs-string">"googAutoGainControl"</span>: <span class="hljs-string">"false"</span>,
+                    <span class="hljs-string">"googNoiseSuppression"</span>: <span class="hljs-string">"false"</span>,
+                    <span class="hljs-string">"googHighpassFilter"</span>: <span class="hljs-string">"false"</span>
+                },
+                <span class="hljs-string">"optional"</span>: []
+            },
+        }, gotStream, didntGetStream);
+    } <span class="hljs-keyword">catch</span> (e) {
+        alert(<span class="hljs-string">'getUserMedia threw exception :'</span> + e);
+    }
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">didntGetStream</span><span class="hljs-params">()</span> </span>{
+    alert(<span class="hljs-string">'Stream generation failed.'</span>);
+}
+<span class="hljs-keyword">var</span> mediaStreamSource = <span class="hljs-keyword">null</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">gotStream</span><span class="hljs-params">(stream)</span> </span>{
+    <span class="hljs-comment">// Create an AudioNode from the stream.</span>
+    mediaStreamSource = audioContext.createMediaStreamSource(stream);
+    <span class="hljs-comment">// Create a new volume meter and connect it.</span>
+    meter = createAudioMeter(audioContext);
+    mediaStreamSource.connect(meter);
+    <span class="hljs-comment">// kick off the visual updating</span>
+    drawLoop();
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">drawLoop</span><span class="hljs-params">( time )</span> </span>{
+    <span class="hljs-comment">// clear the background</span>
+    canvasContext.clearRect(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,WIDTH,HEIGHT);
+    <span class="hljs-comment">// check if we're currently clipping</span>
+    <span class="hljs-keyword">if</span> (meter.checkClipping())
+        canvasContext.fillStyle = <span class="hljs-string">"red"</span>;
+    <span class="hljs-keyword">else</span>
+        canvasContext.fillStyle = <span class="hljs-string">"green"</span>;
+    <span class="hljs-comment">// draw a bar based on the current volume</span>
+    canvasContext.fillRect(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, meter.volume*WIDTH*<span class="hljs-number">1.4</span>, HEIGHT);
+    <span class="hljs-comment">// console.log(meter.volume);//avg &lt;0.004 consider there is no audio is record</span>
+    <span class="hljs-comment">// set up the next visual callback</span>
+    rafID = window.requestAnimationFrame( drawLoop );
+}
+</code></pre>
+<p>luyin.js需要修改下,以下是新的luyin.js</p>
+<pre><code class="hljs javascript">(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">window</span>) </span>{
+    <span class="hljs-comment">//兼容</span>
+    <span class="hljs-built_in">window</span>.URL = <span class="hljs-built_in">window</span>.URL || <span class="hljs-built_in">window</span>.webkitURL;
+    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+    <span class="hljs-keyword">var</span> HZRecorder = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream, config</span>) </span>{
+        config = config || {};
+        config.sampleBits = config.sampleBits || <span class="hljs-number">16</span>;      <span class="hljs-comment">//采样数位 8, 16</span>
+        config.sampleRate = config.sampleRate || (<span class="hljs-number">16000</span>);   <span class="hljs-comment">//采样率(1/6 44100)</span>
+        <span class="hljs-keyword">var</span> context = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">window</span>.webkitAudioContext || <span class="hljs-built_in">window</span>.AudioContext)();
+        <span class="hljs-keyword">var</span> audioInput = context.createMediaStreamSource(stream);
+        <span class="hljs-keyword">var</span> createScript = context.createScriptProcessor || context.createJavaScriptNode;
+        <span class="hljs-keyword">var</span> recorder = createScript.apply(context, [<span class="hljs-number">4096</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">var</span> emptyCheckCount=<span class="hljs-number">0</span>;
+        
+        
+        <span class="hljs-keyword">var</span> audioData = {
+            <span class="hljs-attr">size</span>: <span class="hljs-number">0</span>          <span class="hljs-comment">//录音文件长度</span>
+            , <span class="hljs-attr">buffer</span>: []     <span class="hljs-comment">//录音缓存</span>
+            , <span class="hljs-attr">inputSampleRate</span>: context.sampleRate    <span class="hljs-comment">//输入采样率</span>
+            , <span class="hljs-attr">inputSampleBits</span>: <span class="hljs-number">16</span>       <span class="hljs-comment">//输入采样数位 8, 16</span>
+            , <span class="hljs-attr">outputSampleRate</span>: config.sampleRate    <span class="hljs-comment">//输出采样率</span>
+            , <span class="hljs-attr">oututSampleBits</span>: config.sampleBits       <span class="hljs-comment">//输出采样数位 8, 16</span>
+            , <span class="hljs-attr">input</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+                <span class="hljs-keyword">this</span>.buffer.push(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(data));
+                <span class="hljs-keyword">this</span>.size += data.length;
+            }
+            , <span class="hljs-attr">compress</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">//合并压缩</span>
+                <span class="hljs-comment">//合并</span>
+                <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(<span class="hljs-keyword">this</span>.size);
+                <span class="hljs-keyword">var</span> offset = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-keyword">this</span>.buffer.length; i++) {
+                    data.set(<span class="hljs-keyword">this</span>.buffer[i], offset);
+                    offset += <span class="hljs-keyword">this</span>.buffer[i].length;
+                }
+                <span class="hljs-comment">//压缩</span>
+                <span class="hljs-keyword">var</span> compression = <span class="hljs-built_in">parseInt</span>(<span class="hljs-keyword">this</span>.inputSampleRate / <span class="hljs-keyword">this</span>.outputSampleRate);
+                <span class="hljs-keyword">var</span> length = data.length / compression;
+                <span class="hljs-keyword">var</span> result = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Float32Array</span>(length);
+                <span class="hljs-keyword">var</span> index = <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">while</span> (index &lt; length) {
+                    result[index] = data[j];
+                    j += compression;
+                    index++;
+                }
+                <span class="hljs-keyword">return</span> result;
+            }
+            , <span class="hljs-attr">encodeWAV</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+                <span class="hljs-keyword">var</span> sampleRate = <span class="hljs-built_in">Math</span>.min(<span class="hljs-keyword">this</span>.inputSampleRate, <span class="hljs-keyword">this</span>.outputSampleRate);
+                <span class="hljs-keyword">var</span> sampleBits = <span class="hljs-built_in">Math</span>.min(<span class="hljs-keyword">this</span>.inputSampleBits, <span class="hljs-keyword">this</span>.oututSampleBits);
+                <span class="hljs-keyword">var</span> bytes = <span class="hljs-keyword">this</span>.compress();
+                <span class="hljs-keyword">var</span> dataLength = bytes.length * (sampleBits / <span class="hljs-number">8</span>);
+                <span class="hljs-keyword">var</span> buffer = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ArrayBuffer</span>(<span class="hljs-number">44</span> + dataLength);
+                <span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">DataView</span>(buffer);
+                <span class="hljs-keyword">var</span> channelCount = <span class="hljs-number">1</span>;<span class="hljs-comment">//单声道</span>
+                <span class="hljs-keyword">var</span> offset = <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">var</span> writeString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">str</span>) </span>{
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; str.length; i++) {
+                        data.setUint8(offset + i, str.charCodeAt(i));
+                    }
+                }
+                <span class="hljs-comment">// 资源交换文件标识符 </span>
+                writeString(<span class="hljs-string">'RIFF'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 下个地址开始到文件尾总字节数,即文件大小-8 </span>
+                data.setUint32(offset, <span class="hljs-number">36</span> + dataLength, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// WAV文件标志</span>
+                writeString(<span class="hljs-string">'WAVE'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 波形格式标志 </span>
+                writeString(<span class="hljs-string">'fmt '</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 过滤字节,一般为 0x10 = 16 </span>
+                data.setUint32(offset, <span class="hljs-number">16</span>, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 格式类别 (PCM形式采样数据) </span>
+                data.setUint16(offset, <span class="hljs-number">1</span>, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 通道数 </span>
+                data.setUint16(offset, channelCount, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 采样率,每秒样本数,表示每个通道的播放速度 </span>
+                data.setUint32(offset, sampleRate, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 波形数据传输率 (每秒平均字节数) 单声道×每秒数据位数×每样本数据位/8 </span>
+                data.setUint32(offset, channelCount * sampleRate * (sampleBits / <span class="hljs-number">8</span>), <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 快数据调整数 采样一次占用字节数 单声道×每样本的数据位数/8 </span>
+                data.setUint16(offset, channelCount * (sampleBits / <span class="hljs-number">8</span>), <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 每样本数据位数 </span>
+                data.setUint16(offset, sampleBits, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">2</span>;
+                <span class="hljs-comment">// 数据标识符 </span>
+                writeString(<span class="hljs-string">'data'</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 采样数据总数,即数据总大小-44 </span>
+                data.setUint32(offset, dataLength, <span class="hljs-literal">true</span>); offset += <span class="hljs-number">4</span>;
+                <span class="hljs-comment">// 写入采样数据 </span>
+                <span class="hljs-keyword">if</span> (sampleBits === <span class="hljs-number">8</span>) {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; bytes.length; i++, offset++) {
+                        <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">-1</span>, <span class="hljs-built_in">Math</span>.min(<span class="hljs-number">1</span>, bytes[i]));
+                        <span class="hljs-keyword">var</span> val = s &lt; <span class="hljs-number">0</span> ? s * <span class="hljs-number">0x8000</span> : s * <span class="hljs-number">0x7FFF</span>;
+                        val = <span class="hljs-built_in">parseInt</span>(<span class="hljs-number">255</span> / (<span class="hljs-number">65535</span> / (val + <span class="hljs-number">32768</span>)));
+                        data.setInt8(offset, val, <span class="hljs-literal">true</span>);
+                    }
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; bytes.length; i++, offset += <span class="hljs-number">2</span>) {
+                        <span class="hljs-keyword">var</span> s = <span class="hljs-built_in">Math</span>.max(<span class="hljs-number">-1</span>, <span class="hljs-built_in">Math</span>.min(<span class="hljs-number">1</span>, bytes[i]));
+                        data.setInt16(offset, s &lt; <span class="hljs-number">0</span> ? s * <span class="hljs-number">0x8000</span> : s * <span class="hljs-number">0x7FFF</span>, <span class="hljs-literal">true</span>);
+                    }
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Blob([data], { <span class="hljs-attr">type</span>: <span class="hljs-string">'audio/wav'</span> });
+            }
+        };
+        <span class="hljs-comment">//开始录音</span>
+        <span class="hljs-keyword">this</span>.start = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            audioInput.connect(recorder);
+            recorder.connect(context.destination);
+        }
+        <span class="hljs-comment">//停止</span>
+        <span class="hljs-keyword">this</span>.stop = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            recorder.disconnect();
+        }
+        <span class="hljs-comment">//</span>
+        <span class="hljs-keyword">this</span>.clear=<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+            size = <span class="hljs-number">0</span>;
+            buffer = [];
+           <span class="hljs-keyword">try</span>{
+           context.close()
+           }<span class="hljs-keyword">catch</span> (DOMException) {
+           <span class="hljs-keyword">return</span>;
+           }
+            initBuffers();
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initBuffers</span>(<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> channel = <span class="hljs-number">0</span>; channel &lt; <span class="hljs-number">1</span>; channel++) {
+                buffer[channel] = [];
+            }
+           <span class="hljs-comment">/* context.close().then(function() {
+                // set things here //
+            });*/</span>
+        }
+        <span class="hljs-comment">//获取音频文件</span>
+        <span class="hljs-keyword">this</span>.getBlob = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+            <span class="hljs-keyword">this</span>.stop();
+            <span class="hljs-keyword">return</span> audioData.encodeWAV();
+        }
+        <span class="hljs-comment">//回放</span>
+        <span class="hljs-keyword">this</span>.play = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">audio</span>) </span>{
+            audio.src = <span class="hljs-built_in">window</span>.URL.createObjectURL(<span class="hljs-keyword">this</span>.getBlob());
+        }
+        <span class="hljs-comment">//上传</span>
+        <span class="hljs-keyword">this</span>.upload = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">url, callback</span>) </span>{
+            <span class="hljs-keyword">var</span> fd = <span class="hljs-keyword">new</span> FormData();
+            fd.append(<span class="hljs-string">"audioData"</span>, <span class="hljs-keyword">this</span>.getBlob());
+            <span class="hljs-keyword">var</span> xhr = <span class="hljs-keyword">new</span> XMLHttpRequest();
+            <span class="hljs-keyword">if</span> (callback) {
+                xhr.upload.addEventListener(<span class="hljs-string">"progress"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'uploading'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"load"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'ok'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"error"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'error'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+                xhr.addEventListener(<span class="hljs-string">"abort"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+                    callback(<span class="hljs-string">'cancel'</span>, e);
+                }, <span class="hljs-literal">false</span>);
+            }
+            xhr.open(<span class="hljs-string">"POST"</span>, url);
+            xhr.send(fd);
+        }
+        <span class="hljs-comment">//音频采集</span>
+        recorder.onaudioprocess = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">e</span>) </span>{
+        <span class="hljs-keyword">var</span> data= e.inputBuffer.getChannelData(<span class="hljs-number">0</span>);
+        <span class="hljs-keyword">var</span> l = <span class="hljs-built_in">Math</span>.floor(data.length / <span class="hljs-number">10</span>);
+        <span class="hljs-keyword">var</span> vol = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; l ; i++){
+        vol += <span class="hljs-built_in">Math</span>.abs(data[i*<span class="hljs-number">10</span>]);
+        }
+        emptyCheckCount ++;
+        <span class="hljs-comment">//console.log("vol="+vol);</span>
+        <span class="hljs-keyword">if</span>(vol &lt; <span class="hljs-number">1.5</span>){ <span class="hljs-comment">//设置音量</span>
+        emptydatacount ++;
+        <span class="hljs-built_in">console</span>.log(emptydatacount);
+        <span class="hljs-keyword">if</span>(emptydatacount &gt;=<span class="hljs-number">15</span>){ <span class="hljs-comment">//设置静音停止次数</span>
+        emptydatacount=<span class="hljs-number">-100</span>;
+        <span class="hljs-comment">//console.log('stoped');</span>
+        <span class="hljs-keyword">try</span>{
+        self.recordStop();
+        }<span class="hljs-keyword">catch</span> (e) {
+        <span class="hljs-keyword">return</span>;
+        }
+        }
+        } <span class="hljs-keyword">else</span> {
+        emptydatacount = <span class="hljs-number">0</span>;
+        }
+            audioData.input(e.inputBuffer.getChannelData(<span class="hljs-number">0</span>));
+            <span class="hljs-comment">//record(e.inputBuffer.getChannelData(0));</span>
+        }
+    };
+    <span class="hljs-comment">//抛出异常</span>
+    HZRecorder.throwError = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">message</span>) </span>{
+        alert(message);
+        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">this</span>.toString = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> message; } }
+    }
+    <span class="hljs-comment">//是否支持录音</span>
+    HZRecorder.canRecording = (navigator.getUserMedia != <span class="hljs-literal">null</span>);
+    <span class="hljs-comment">//获取录音机</span>
+    HZRecorder.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback, config</span>) </span>{
+        <span class="hljs-keyword">if</span> (callback) {
+            <span class="hljs-keyword">if</span> (navigator.getUserMedia) {
+                navigator.getUserMedia(
+                    { <span class="hljs-attr">audio</span>: <span class="hljs-literal">true</span> } <span class="hljs-comment">//只启用音频</span>
+                    , <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">stream</span>) </span>{
+                        <span class="hljs-keyword">var</span> rec = <span class="hljs-keyword">new</span> HZRecorder(stream, config);
+                        callback(rec);
+                    }
+                    , <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+                        <span class="hljs-keyword">switch</span> (error.code || error.name) {
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'PERMISSION_DENIED'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'PermissionDeniedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'用户拒绝提供信息。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'NOT_SUPPORTED_ERROR'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'NotSupportedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'浏览器不支持硬件设备。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'MANDATORY_UNSATISFIED_ERROR'</span>:
+                            <span class="hljs-keyword">case</span> <span class="hljs-string">'MandatoryUnsatisfiedError'</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'无法发现指定的硬件设备。'</span>);
+                                <span class="hljs-keyword">break</span>;
+                            <span class="hljs-keyword">default</span>:
+                                HZRecorder.throwError(<span class="hljs-string">'无法打开麦克风。异常信息:'</span> + (error.code || error.name));
+                                <span class="hljs-keyword">break</span>;
+                        }
+                    });
+            } <span class="hljs-keyword">else</span> {
+                HZRecorder.throwErr(<span class="hljs-string">'当前浏览器不支持录音功能。'</span>); <span class="hljs-keyword">return</span>;
+            }
+        }
+    }
+    <span class="hljs-built_in">window</span>.HZRecorder = HZRecorder;
+})(<span class="hljs-built_in">window</span>);
+</code></pre>
+<p>这样就能获取说话人音量大小,从而在小于一个音量持续一段时间后让录音停止
+我的页面中的部分代码如下:</p>
+<pre><code class="language-&lt;script&gt; hljs php"><span class="hljs-keyword">var</span> emptydatacount=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">var</span> intervalID = <span class="hljs-keyword">null</span>;
+        <span class="hljs-keyword">var</span> recorder;
+        $(<span class="hljs-string">".loading"</span>).hide();
+        <span class="hljs-keyword">var</span> audio = document.querySelector(<span class="hljs-string">'audio'</span>);
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">startRecording</span><span class="hljs-params">()</span> </span>{
+        emptydatacount=<span class="hljs-number">0</span>;
+       
+        <span class="hljs-keyword">var</span> audios = document.getElementsByTagName(<span class="hljs-string">'audio'</span>);
+     	    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = audios.length; i &lt; len&amp;&amp;len&gt;<span class="hljs-number">1</span>;i++){
+     	        <span class="hljs-keyword">if</span>(audios[i] != <span class="hljs-keyword">null</span>){
+     	            audios[i].pause();
+     	        }
+     	    }
+            HZRecorder.get(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(rec)</span> </span>{
+                recorder = rec;
+                recorder.start();
+            });
+            $(<span class="hljs-string">".loading"</span>).show();
+            clearInterval(intervalID);
+            intervalID=window.setInterval(upload, <span class="hljs-number">150</span>);
+            console.log(<span class="hljs-string">"INter"</span>+intervalID);
+           <span class="hljs-comment">// console.log(HZRecorder);</span>
+            <span class="hljs-comment">//var meter = createAudioMeter(audioContext,0.98,0.95,750);</span>
+            <span class="hljs-comment">//console.log(meter.volume)</span>
+            
+            
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">cancelRecording</span><span class="hljs-params">()</span></span>{
+        $(<span class="hljs-string">".loading"</span>).hide();
+        recorder.clear();
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">stopRecording</span><span class="hljs-params">()</span> </span>{
+            recorder.stop();
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">playRecording</span><span class="hljs-params">()</span> </span>{
+            recorder.play(audio);
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clearRecording</span><span class="hljs-params">()</span> </span>{
+            recorder.clear();
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getRes</span><span class="hljs-params">(result)</span></span>{
+        <span class="hljs-keyword">if</span>(result==undefined){
+           	setTimeout(getRes,<span class="hljs-number">100</span>);
+           	}<span class="hljs-keyword">else</span>{
+           	<span class="hljs-keyword">return</span> result;
+           	}
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">upload</span><span class="hljs-params">()</span></span>{
+        <span class="hljs-comment">//没说话1.5秒自动结束</span>
+        <span class="hljs-keyword">if</span>(emptydatacount&lt;<span class="hljs-number">-1</span>){
+        clearInterval(intervalID);
+        emptydatacount=undefined;
+        <span class="hljs-keyword">if</span>(emptydatacount===undefined)
+        uploadAudio();
+       
+       
+        $(<span class="hljs-string">".loading"</span>).hide();
+        }
+       
+        console.log(<span class="hljs-string">"emptydatacount"</span>+emptydatacount)
+        }
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">uploadAudio</span><span class="hljs-params">()</span> </span>{
+        clearRecording();
+        stopRecording();
+            <span class="hljs-comment">//提交到服务器</span>
+            recorder.upload(<span class="hljs-string">"/dhc/admin/upload.act"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(state, e)</span> </span>{
+                <span class="hljs-keyword">switch</span> (state) {
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'uploading'</span>:
+                        <span class="hljs-comment">//var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';</span>
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'ok'</span>:
+                        <span class="hljs-comment">//alert(e.target.responseText);</span>
+                       <span class="hljs-comment">// alert("上传成功");</span>
+                    <span class="hljs-keyword">var</span> result=<span class="hljs-keyword">eval</span>(<span class="hljs-string">"("</span>+getRes(e.target.responseText)+<span class="hljs-string">")"</span>).result;
+                    <span class="hljs-keyword">if</span>(result==undefined){
+                 
+                    <span class="hljs-keyword">return</span>;
+                    }
+              $(<span class="hljs-string">"#messCon"</span>).val(result);
+              $(<span class="hljs-string">"#sendMess"</span>).click();
+              clearRecording();
+                       <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'error'</span>:
+                        alert(<span class="hljs-string">"上传失败"</span>);
+                        <span class="hljs-keyword">break</span>;
+                    <span class="hljs-keyword">case</span> <span class="hljs-string">'cancel'</span>:
+                        alert(<span class="hljs-string">"上传被取消"</span>);
+                        <span class="hljs-keyword">break</span>;
+                }
+            });
+            $(<span class="hljs-string">".loading"</span>).hide();
+           
+        }
+    &lt;/script&gt;
+</code></pre>
+<p>附件
+链接: https://pan.baidu.com/s/1bQEJYjHjYu5e_o4qS0wf6g 密码: ywgn
+链接: https://pan.baidu.com/s/1IqKWtQSS5MG0B_qcwYqNqg 密码: vmyw
+注意事项:
+语音合成和语音识别的jar包会冲突,我所给的连接有个jar包包名做了修改,完美解决了一个项目中不能共存的尴尬问题
+语音识别只能识别60s以内的录音,语音合成相对简单这里不再赘述.
+参考:
+[语音技术]H5的录音类控制自动停止（2） https://ai.baidu.com/forum/topic/show/496524
+搭建本地HTTPS测试环境
+https://github.com/cwilso/volume-meter</p>
+
+        <p class="post-info">
+            本文由 <a href="http://cong921.i64.top:9000/article/2"></a> 创作，采用 <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="external nofollow">知识共享署名4.0</a> 国际许可协议进行许可<br>本站文章除注明转载/出处外，均为本站原创或翻译，转载前请务必署名<br>最后编辑时间为:
+            2018/09/29 08:11
+        </p>
+    </div>
+</article>
+<div id="post-bottom-bar" class="post-bottom-bar">
+    <div class="bottom-bar-inner">
+        <div class="bottom-bar-items social-share left">
+            <span class="bottom-bar-item">Share : </span>
+            <span class="bottom-bar-item bottom-bar-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://cong921.i64.top:9000/article/2" target="_blank" title="​ 百度语音识别和语音合成(ssm+records.js+h5)" rel="nofollow">facebook</a></span>
+            <span class="bottom-bar-item bottom-bar-twitter"><a href="https://twitter.com/intent/tweet?url=http://cong921.i64.top:9000/article/2&amp;text=%E2%80%8B%20%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90(ssm+records.js+h5)" target="_blank" title="​ 百度语音识别和语音合成(ssm+records.js+h5)" rel="nofollow">Twitter</a></span>
+            <span class="bottom-bar-item bottom-bar-weibo"><a href="http://service.weibo.com/share/share.php?url=http://cong921.i64.top:9000/article/2&amp;title=%E2%80%8B%20%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E8%AF%86%E5%88%AB%E5%92%8C%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90(ssm+records.js+h5)" target="_blank" title="​ 百度语音识别和语音合成(ssm+records.js+h5)" rel="nofollow">Weibo</a></span>
+            <span class="bottom-bar-item bottom-bar-qrcode"><a href="http://pan.baidu.com/share/qrcode?w=300&amp;h=300&amp;url=http://cong921.i64.top:9000/article/2" target="_blank" rel="nofollow">QRcode</a></span>
+        </div>
+        <div class="bottom-bar-items right">
+            <span class="bottom-bar-item"></span>
+            <span class="bottom-bar-item"><a href="http://cong921.i64.top:9000/article/4" title="python @log @log(text)">←</a></span>
+            <span class="bottom-bar-item"><a href="http://cong921.i64.top:9000/article/2#footer">↓</a></span>
+            <span class="bottom-bar-item"><a href="http://cong921.i64.top:9000/article/2#">↑</a></span>
+        </div>
+    </div>
+</div>
+<div id="2" class="comment-container">
+    <div id="comments" class="clearfix">
+        <span class="response"></span>
+
+        <form method="post" id="comment-form" class="comment-form" onsubmit="return TaleComment.subComment();">
+            <input type="hidden" name="coid" id="coid">
+            <input type="hidden" name="cid" id="cid" value="2">
+            <input type="hidden" name="csrf_token" value="xE9Yx5GdGOPvIfh8LGwy31">
+            <input name="author" maxlength="12" id="author" class="form-control input-control clearfix" placeholder="姓名 (*)" value="" required="">
+            <input type="email" name="mail" id="mail" class="form-control input-control clearfix" placeholder="邮箱 (*)" value="" required="">
+            <input type="url" name="url" id="url" class="form-control input-control clearfix" placeholder="网址 (http://)" value="">
+            <textarea name="content" id="textarea" class="form-control" placeholder="基佬，留下你的评论." required="" minlength="5" maxlength="2000"></textarea>
+            <button class="submit" id="misubmit">提交</button>
+        </form>
+
+
+
+
+    </div>
+</div>
+<script type="text/javascript">
+    (function () {
+        window.TaleComment = {
+            reply: function (coid) {
+                $('#comment-form input[name=coid]').val(coid);
+                $("html,body").animate({scrollTop: $('div.comment-container').offset().top}, 500);
+                $('#comment-form #textarea').focus();
+            },
+            subComment: function () {
+                $.ajax({
+                    type: 'post',
+                    url: '/comment',
+                    data: $('#comment-form').serialize(),
+                    async: false,
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#comment-form input[name=coid]').val('');
+                        if (result && result.success) {
+                            window.location.reload();
+                        } else {
+                            if (result.msg) {
+                                alert(result.msg);
+                                window.location.reload();
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        };
+    })();
+
+    function getCommentCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(decodeURI(arr[2]));
+        else
+            return null;
+    }
+
+    function addCommentInputValue() {
+        document.getElementById('author').value = getCommentCookie('tale_remember_author');
+        document.getElementById('mail').value = getCommentCookie('tale_remember_mail');
+        document.getElementById('url').value = getCommentCookie('tale_remember_url');
+    }
+
+    addCommentInputValue();
+</script>
+<footer id="footer" class="footer bg-white">
+    <div class="footer-social">
+        <div class="footer-container clearfix">
+            <div class="social-list">
+
+
+    <a class="social rss" target="blank" href="http://cong921.i64.top:9000/feed">RSS</a>
+
+
+</div>
+        </div>
+    </div>
+    <div class="footer-meta">
+        <div class="footer-container">
+            <div class="meta-item meta-copyright">
+                <div class="meta-copyright-info">
+                    <a href="http://cong921.i64.top:9000/" class="info-logo">
+                        <img src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/logo.png" alt="博客">
+                    </a>
+                    <div class="info-text">
+                        <p>一生有所追求.</p>
+                        <p>Powered by <a href="https://github.com/otale/tale" target="_blank" rel="nofollow">Tale</a>
+                        </p>
+                        <p>© 2017 <a href="https://github.com/biezhi">biezhi</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="meta-item meta-posts">
+                <h3 class="meta-title">最新文章</h3>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/20">以湖南为例添加语音功能</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/19">python 协程爬发表情整个网站</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/18">发日志到指定邮箱</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/17">ArrayList实现</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/16">java</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/13">用selenium+python+BeautifulSoup采集上海市政府办事指南</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/12">用代理ip爬取创业邦</a>
+                </li>
+                <li>
+                    <a href="http://cong921.i64.top:9000/article/11">python爬虫Post提交</a>
+                </li>
+            </div>
+
+            <div class="meta-item meta-comments">
+                <h3 class="meta-title">最新评论</h3>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div id="directory-content" class="directory-content">
+    <div id="directory"><ul></ul></div>
+</div>
+<script>
+    $('#directory').html('');
+    var postDirectoryBuild = function() {
+        var postChildren = function children(childNodes, reg) {
+                var result = [],
+                    isReg = typeof reg === 'object',
+                    isStr = typeof reg === 'string',
+                    node, i, len;
+                for (i = 0, len = childNodes.length; i < len; i++) {
+                    node = childNodes[i];
+                    if ((node.nodeType === 1 || node.nodeType === 9) &&
+                        (!reg ||
+                        isReg && reg.test(node.tagName.toLowerCase()) ||
+                        isStr && node.tagName.toLowerCase() === reg)) {
+                        result.push(node);
+                    }
+                }
+                return result;
+            },
+            createPostDirectory = function(article, directory, isDirNum) {
+                var contentArr = [],
+                    titleId = [],
+                    levelArr, root, level,
+                    currentList, list, li, link, i, len;
+                levelArr = (function(article, contentArr, titleId) {
+                    var titleElem = postChildren(article.childNodes, /^h\d$/),
+                        levelArr = [],
+                        lastNum = 1,
+                        lastRevNum = 1,
+                        count = 0,
+                        guid = 1,
+                        id = 'directory' + (Math.random() + '').replace(/\D/, ''),
+                        lastRevNum, num, elem;
+                    while (titleElem.length) {
+                        elem = titleElem.shift();
+                        contentArr.push(elem.innerHTML);
+                        num = +elem.tagName.match(/\d/)[0];
+                        if (num > lastNum) {
+                            levelArr.push(1);
+                            lastRevNum += 1;
+                        } else if (num === lastRevNum ||
+                            num > lastRevNum && num <= lastNum) {
+                            levelArr.push(0);
+                            lastRevNum = lastRevNum;
+                        } else if (num < lastRevNum) {
+                            levelArr.push(num - lastRevNum);
+                            lastRevNum = num;
+                        }
+                        count += levelArr[levelArr.length - 1];
+                        lastNum = num;
+                        elem.id = elem.id || (id + guid++);
+                        titleId.push(elem.id);
+                    }
+                    if (count !== 0 && levelArr[0] === 1) levelArr[0] = 0;
+
+                    return levelArr;
+                })(article, contentArr, titleId);
+                currentList = root = document.createElement('ul');
+                dirNum = [0];
+                for (i = 0, len = levelArr.length; i < len; i++) {
+                    level = levelArr[i];
+                    if (level === 1) {
+                        list = document.createElement('ul');
+                        if (!currentList.lastElementChild) {
+                            currentList.appendChild(document.createElement('li'));
+                        }
+                        currentList.lastElementChild.appendChild(list);
+                        currentList = list;
+                        dirNum.push(0);
+                    } else if (level < 0) {
+                        level *= 2;
+                        while (level++) {
+                            if (level % 2) dirNum.pop();
+                            currentList = currentList.parentNode;
+                        }
+                    }
+                    dirNum[dirNum.length - 1]++;
+                    li = document.createElement('li');
+                    link = document.createElement('a');
+                    link.href = '#' + titleId[i];
+                    link.innerHTML = !isDirNum ? contentArr[i] :
+                        dirNum.join('.') + ' ' + contentArr[i] ;
+                    li.appendChild(link);
+                    currentList.appendChild(li);
+                }
+                directory.appendChild(root);
+            };
+        createPostDirectory(document.getElementById('post-content'),document.getElementById('directory'), true);
+    };
+    postDirectoryBuild();
+</script>
+<script src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/headroom.min.js.下载"></script>
+<script src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/highlight.min.js.下载"></script>
+<script src="./_ 百度语音识别和语音合成(ssm+records.js+h5) - 博客_files/instantclick.min.js.下载"></script>
+<script type="text/javascript">
+        var postDirectory = new Headroom(document.getElementById("directory-content"), {
+            tolerance: 0,
+            offset : 100,
+            classes: {
+                initial: "initial",
+                pinned: "pinned",
+                unpinned: "unpinned"
+            }
+        });
+    var header = new Headroom(document.getElementById("header"), {
+        tolerance: 10,
+        offset : 80,
+        classes: {
+            initial: "animated",
+            pinned: "slideDown",
+            unpinned: "slideUp"
+        }
+    });
+    header.init();
+    $('#search-inp').keypress(function (e) {
+        var key = e.which; //e.which是按键的值
+        if (key == 13) {
+            var q = $(this).val();
+            if (q && q != '') {
+                window.location.href = '/search/' + q;
+            }
+        }
+    });
+</script>
+<script data-no-instant="">
+    InstantClick.on('change', function (isInitialLoad) {
+        var blocks = document.querySelectorAll('pre code');
+        for (var i = 0; i < blocks.length; i++) {
+            hljs.highlightBlock(blocks[i]);
+        }
+        if (isInitialLoad === false) {
+            if (typeof ga !== 'undefined') ga('send', 'pageview', location.pathname + location.search);
+        }
+    });
+    InstantClick.init('mousedown');
+</script>
+
+<div id="cntvlive2-is-installed"></div></body></html>
